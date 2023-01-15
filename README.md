@@ -37,7 +37,7 @@ Use great [Cloud Storage Cost Calculator](http://coststorage.com) to check your 
 
 I do save audio track, chat transcripts and one video file recording per meeting. Video file is selected to retain maximum information with following priorities: `shared_screen_with_gallery_view`, `gallery_view`, `shared_screen_with_speaker_view`, `speaker_view`, `shared_screen`. First hit from the list is saved, other videos are discarded.
 
-You might want to preserve different set of files, this can be tuned in lines 62-72.
+You might want to preserve different set of files, this can be tuned in lines 62-72. Complete list of recording file types can be found [here](https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/recordingGet).
 
 ## Code quality, bugs and feature requests
 
