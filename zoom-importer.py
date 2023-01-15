@@ -32,8 +32,6 @@ def delete_recordings(uuid):
 				"Authorization": f"Bearer {ZOOM_KEY}",
 			},
 		)
-		if 200 <= response.status_code <= 299:
-			print('		deleted')
 	except requests.exceptions.RequestException:
 		print(f"delete failed for {uuid}")
 
@@ -91,10 +89,10 @@ def send_request(date_from, date_to):
 							os.remove(filename)
 						except FileNotFoundError:
 							pass
-				time_elapsed = time.time() - time_start
-				speed = processed_storage / (time_elapsed/60)
-				print(f"total processed {processed_storage:,} bytes, elapsed {time_elapsed:,.0f} sec, {speed:,.0f} bytes per minute")
 			delete_recordings(meeting['uuid'])
+			time_elapsed = time.time() - time_start
+			speed = processed_storage / (time_elapsed/60)
+			print(f"total processed {processed_storage:,} bytes, elapsed {time_elapsed:,.0f} sec, {speed:,.0f} bytes per minute")
 	except requests.exceptions.RequestException:
 		print('HTTP Request failed')
 
