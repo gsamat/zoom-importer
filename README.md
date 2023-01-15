@@ -22,8 +22,8 @@ Use great [Cloud Storage Cost Calculator](http://coststorage.com) to check your 
 ## Quick start guide
 
 1. Choose if you'd like to do it from your laptop or server. You'd need fast internet and free space on the disk to fit the largest of your recordings (files are deleted upon upload).
-1. Clone the repo `git clone zoom-importer`
-2. Get all the dependencies `pip3 install`
+1. Clone or download the repo 
+2. Get all the dependencies `pip3 install -r requirements.txt`
 3. Rename example.env to .env and open it with an editor
 4. Register for [Zoom Dev account](https://developers.zoom.us) and create a new app, generate a login token and paste it into .env
 5. [Register for Backblaze](https://www.backblaze.com/b2/sign-up.html), create a bucket, drop it's name into .env file

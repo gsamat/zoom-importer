@@ -1,0 +1,4 @@
+requests
+python-slugify
+b2sdk
+environs
