@@ -24,18 +24,18 @@ Use great [Cloud Storage Cost Calculator](http://coststorage.com) to check your 
 1. Choose if you'd like to do it from your laptop or server. You'd need fast internet and free space on the disk to fit the largest of your recordings (files are deleted upon upload).
 1. Clone or download the repo 
 2. Get all the dependencies `pip3 install -r requirements.txt`
-3. Rename example.env to .env and open it with an editor
+3. Rename `example.env` to `.env` and open it with an editor
 4. Register for [Zoom Dev account](https://developers.zoom.us) and create a new app, generate a login token and paste it into .env
 5. [Register for Backblaze](https://www.backblaze.com/b2/sign-up.html), create a bucket, drop it's name into .env file
 6. Create a new auth key in Backblaze, drop it's ID and the Key into .env file
-7. Choose a range of dates you'd like to move. If not sure — export a list of all recording from zoom web interface and check it's first and last line — and drop them into .env file
+7. Choose a range of dates you'd like to move. If not sure — export a list of all recording from zoom web interface and check it's first and last line — and drop them into `.env` file
 8. Check that all dependencies are met and run the app `python3 zoom-importer.py`. It should show you the dates, meeting names and download/upload notifications along with some stats: time elapsed, data cleaned from Zoom and cleanup speed.
 9. Add your credit card to Backblaze on [billing page](https://secure.backblaze.com/billing_card.htm), so you are not blocked when you hit 10GB free limit.
 10. Profit
 
 ## Tuning
 
-I do save audio track, chat transcripts and one video file recording per meeting. Video file is selected to retain maximum information with following priorities: shared_screen_with_gallery_view, gallery_view, shared_screen_with_speaker_view, speaker_view, shared_screen. First hit from the list is saved, other videos are discarded.
+I do save audio track, chat transcripts and one video file recording per meeting. Video file is selected to retain maximum information with following priorities: `shared_screen_with_gallery_view`, `gallery_view`, `shared_screen_with_speaker_view`, `speaker_view`, `shared_screen`. First hit from the list is saved, other videos are discarded.
 
 You might want to preserve different set of files, this can be tuned in lines 62-72.
 
