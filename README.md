@@ -52,3 +52,11 @@ There are two approaches to move new recordings from Zoom to Backblaze automatic
 1. Run this script [periodically](https://en.wikipedia.org/wiki/Cron), on the end of the day, e. g.
 
 2. Subscribe to a '[zoom recording completed](https://marketplace.zoom.us/docs/guides/guides/managing-recordings/)' webhook from zoom and run this script when said webhook is fired — I recommend this [excellent webhook server](https://github.com/adnanh/webhook) for that.
+
+Alternatively, use some of this lively tools for AWS (I am personally too scared to ops AWS, but you might be more experienced or braver):
+- https://github.com/danielsoneg/egd-zoom_aws_sync
+- https://github.com/openlibraryenvironment/serverless-zoom-recordings
+- https://github.com/Speeeddy/zoom-recording-s3-exporter
+- https://github.com/ColoredCow/zoom-s3-recording-migrations-lambda
+- https://github.com/loneJogger/zoom-archiver
+- https://github.com/benniemosher/recordings-archiver
