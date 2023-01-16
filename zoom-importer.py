@@ -7,6 +7,7 @@ import b2sdk
 import os
 import time
 from environs import Env
+import urllib
 
 def download_file(url, filename):
 	response = requests.get(
@@ -26,6 +27,7 @@ def b2_file_size(file):
 
 def delete_recordings(uuid):
 	try:
+		uuid = urllib.parse.quote(urllib.parse.quote(uuid, safe = ''))
 		response = requests.delete(
 			url=f"https://api.zoom.us/v2/meetings/{uuid}/recordings",
 			headers={
