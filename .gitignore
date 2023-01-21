@@ -1,2 +1,6 @@
 .DS_Store
 .env
+venv/
+
+#flake8 setup file
+setup.cfg
