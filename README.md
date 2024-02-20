@@ -22,10 +22,18 @@ Use great [Cloud Storage Cost Calculator](http://coststorage.com) to check your 
 ## Quick start guide
 
 1. Choose if you'd like to do it from your laptop or server. You'd need fast internet and free space on the disk to fit the largest of your recordings (files are deleted upon upload).
-1. Clone or download the repo 
+1. Clone or download the repo
 2. Get all dependencies `pip3 install -r requirements.txt`
 3. Rename `example.env` to `.env` and open it with an editor
-4. Register for [Zoom Dev account](https://developers.zoom.us) and create a new app, generate a login token and paste it into .env
+4. Register for [Zoom Dev account](https://developers.zoom.us) and create a new app
+    0. Create a Server-to-Server OAuth app:
+    1. Navigate to the [Zoom Marketplace](https://marketplace.zoom.us/develop)
+    2. Click on the `Develop` button in the top-right corner
+    3. Select `Build App` from the dropdown menu
+    4. Choose `Server-to-Server` as the app type
+    5. Grant the app access to `Recording: Read` scope
+    6. Get your API Key and Secret and paste them into `.env` file
+
 5. [Register for Backblaze](https://www.backblaze.com/b2/sign-up.html), create a bucket, drop it's name into .env file
 6. Create a new auth key in Backblaze, drop it's ID and the Key into .env file
 7. Choose a range of dates you'd like to move. If not sure — export a list of all recording from zoom web interface and check it's first and last line — and drop them into `.env` file
@@ -45,7 +53,7 @@ I am not a professional python developer and code might be obscene without me re
 
 This script worked for my 3 years worth of recordings: 3k meetings, 1,3TB of storage in Zoom, but might break in your case. Please open an issue via GitHub and include tracebacks, I will do my best to fix them.
 
-## Automatically move new recordings 
+## Automatically move new recordings
 
 There are two approaches to move new recordings from Zoom to Backblaze automatically:
 

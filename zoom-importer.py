@@ -1,6 +1,7 @@
+import base64
 import requests
 import json
-from slugify import slugify 
+from slugify import slugify
 from datetime import date, timedelta
 import b2sdk.v2 as b2
 import b2sdk
@@ -8,6 +9,16 @@ import os
 import time
 from environs import Env
 import urllib
+import jwt
+import time
+
+def generate_zoom_jwt(client_id, client_secret):
+    payload = {
+        'iss': client_id,
+        'exp': time.time() + 3600  # The token will be valid for 1 hour
+    }
+    jwt_encoded = jwt.encode(payload, client_secret, algorithm='HS256')
+    return jwt_encoded
 
 def download_file(url, filename):
 	response = requests.get(
@@ -39,6 +50,8 @@ def delete_recordings(uuid):
 
 def send_request(date_from, date_to):
 	try:
+		print(f"ZOOM_KEY: {ZOOM_KEY}")
+
 		response = requests.get(
 			url="https://api.zoom.us/v2/users/me/recordings",
 			params={
@@ -49,7 +62,15 @@ def send_request(date_from, date_to):
 				"Authorization": f"Bearer {ZOOM_KEY}",
 			},
 		)
-		meetings = response.json()["meetings"]
+
+		response_json = response.json()
+		if 'meetings' in response_json:
+			meetings = response_json["meetings"]
+		else:
+			meetings = []
+			print(response_json)
+			print("No 'meetings' key in the response")
+
 		for meeting in meetings:
 			name =  meeting['start_time'] + '-' + meeting['topic']
 			print('	' + name)
@@ -104,12 +125,37 @@ def daterange(start_date, end_date):
     for n in range(int((start_date - end_date).days)):
         yield start_date - timedelta(n)
 
+
+# Get Zoom access token using client ID and client secret
+def get_zoom_access_token(client_id, client_secret):
+	try:
+		response = requests.post(
+			url="https://zoom.us/oauth/token",
+			params={
+				"grant_type": "client_credentials"
+			},
+			headers={
+				"Authorization": f"Basic {base64.b64encode(f'{client_id}:{client_secret}'.encode()).decode()}"
+			}
+		)
+		response_json = response.json()
+		if 'access_token' in response_json:
+			return response_json['access_token']
+		else:
+			print(response_json)
+			print("No 'access_token' key in the response")
+			return None
+	except requests.exceptions.RequestException:
+		print('HTTP Request failed')
+
+
 env = Env()
 env.read_env()
 B2_KEY_ID = env('B2_KEY_ID')
 B2_KEY = env('B2_KEY')
 BUCKET = env('BUCKET')
-ZOOM_KEY = env('ZOOM_KEY')
+CLIENT_ID = env('CLIENT_ID')
+CLIENT_SECRET = env('CLIENT_SECRET')
 DATE_FROM_Y = env.int('DATE_FROM_Y')
 DATE_FROM_M = env.int('DATE_FROM_M')
 DATE_FROM_D = env.int('DATE_FROM_D')
@@ -128,6 +174,12 @@ time_start = time.time()
 if __name__ == "__main__":
 	start_date = date(DATE_FROM_Y, DATE_FROM_M, DATE_FROM_D)
 	end_date = date(DATE_TO_Y, DATE_TO_M, DATE_TO_D)
+	 # Get Zoom access token
+	ZOOM_KEY = get_zoom_access_token(CLIENT_ID, CLIENT_SECRET)
+
+	# ZOOM_KEY = generate_zoom_jwt(CLIENT_ID, CLIENT_SECRET)
+	# Print out the first few characters of the ZOOM_KEY for debugging
+	print(f"ZOOM_KEY loaded: {ZOOM_KEY[:5]}...")
 	for single_date in daterange(start_date, end_date):
 		print(f"{single_date.strftime('%Y-%m-%d')}")
 		send_request(single_date.strftime("%Y-%m-%d"), single_date.strftime("%Y-%m-%d"))
