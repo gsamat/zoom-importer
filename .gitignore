@@ -1,2 +1,5 @@
 .DS_Store
 .env
+*.mp4
+
+.python-version

@@ -32,7 +32,15 @@ Use great [Cloud Storage Cost Calculator](http://coststorage.com) to check your 
     3. Select `Build App` from the dropdown menu
     4. Choose `Server-to-Server` as the app type
     5. Grant the app access to `Recording: Read` scope
-    6. Get your API Key and Secret and paste them into `.env` file
+    6. You need to provide your Zoom account details in the `.env` file for the application to function correctly.
+
+    In your `example.env` file, you will find the following section:
+
+    ```plaintext
+    # Zoom
+    ACCOUNT_ID=
+    CLIENT_ID=
+    CLIENT_SECRET=
 
 5. [Register for Backblaze](https://www.backblaze.com/b2/sign-up.html), create a bucket, drop it's name into .env file
 6. Create a new auth key in Backblaze, drop it's ID and the Key into .env file
