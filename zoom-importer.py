@@ -43,26 +43,34 @@ def delete_recording(uuid):
 
 
 def process_file(file, name):
-    filename = slugify(name) + '.' + file['file_extension'].lower()
-    size_zoom = file['file_size']
-    size_bb = b2_file_size(filename)
-    try:
-        size_local = os.path.getsize(filename)
-    except FileNotFoundError:
-        size_local = 0
-    if size_zoom > size_bb:
-        if size_zoom > size_local:
-            file_url = file['download_url']
-            print('			start download: ' + filename)
-            download_file(file_url, filename)
-    print('			start upload: ' + filename)
-    bucket.upload_local_file(filename, filename)
+	filename = slugify(name) + '.' + file['file_extension'].lower()
+	size_zoom = file['file_size']
+	size_bb = b2_file_size(filename)
+	try:
+		size_local = os.path.getsize(filename)
+	except FileNotFoundError:
+		size_local = 0
+	if size_zoom > size_bb:
+		if size_zoom > size_local:
+			file_url = file['download_url']
+			print('    start download: ' + filename)
+			download_file(file_url, filename)
+			# Check if the file was downloaded successfully
+			if not os.path.exists(filename):
+				print(f"Failed to download file: {filename}")
+				return
+	print('    start upload: ' + filename)
+	# Check if the file exists and is accessible before upload
+	if os.path.exists(filename) and os.access(filename, os.R_OK):
+		bucket.upload_local_file(filename, filename)
+	else:
+		print(f"File {filename} doesn't exist or isn't accessible")
+		return
 
-    try:
-        os.remove(filename)
-    except FileNotFoundError:
-        pass
-
+	try:
+		os.remove(filename)
+	except FileNotFoundError:
+		pass
 
 def process_meeting(meeting):
     print(f"	{meeting['start_time']} {meeting['topic']}")
